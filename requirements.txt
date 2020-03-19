@@ -1,0 +1,7 @@
+tqdm
+boto3
+requests
+fastBPE
+sklearn
+ujson
+spacy
