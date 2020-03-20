@@ -1,3 +1,9 @@
+# Copyright (c) 2020-present, Facebook, Inc.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree.
+#
 # Usage: ./get-data-umt.sh --src mh --tgt sh --reload_codes dumped/xlm_en/codes_en --reload_vocab dumped/xlm_en/vocab_en --data_folder all
 # This script will successively:
 # 1) download Moses scripts, download and compile fastBPE
