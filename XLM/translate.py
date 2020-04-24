@@ -15,7 +15,6 @@
 #     --model_path trained_model.pth --output_path output
 #
 
-import apex
 import os
 import io
 import sys
@@ -100,6 +99,7 @@ def main(params):
     decoder.load_state_dict(reloaded['decoder'])
 
     if params.amp != 0:
+        import apex
         models = apex.amp.initialize(
             [encoder, decoder],
             opt_level=('O%i' % params.amp)
