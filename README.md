@@ -1,6 +1,6 @@
 # UnsupervisedDecomposition
 
-PyTorch original implementation of "[Unsupervised Question Decomposition for Question Answering](https://arxiv.org/abs/2002.09758)."
+PyTorch original implementation of "[Unsupervised Question Decomposition for Question Answering](https://arxiv.org/abs/2002.09758)" (EMNLP 2020).
 
 TL;DR: We decompose hard (multi-hop) questions into several, easier (single-hop) questions using unsupervised learning. Our decompositions improve multi-hop QA on [HotpotQA](https://arxiv.org/pdf/1809.09600.pdf) without requiring extra supervision to decompose questions.  
 
@@ -192,13 +192,11 @@ To train a decomposition model to generate a variable number of sub-questions, y
 
 ## Citation
 ```
-@article{perez2020unsupervised,
+@inproceedings{perez2020unsupervised,
     title={Unsupervised Question Decomposition for Question Answering},
     author={Ethan Perez and Patrick Lewis and Wen-tau Yih and Kyunghyun Cho and Douwe Kiela},
     year={2020},
-    eprint={2002.09758},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL},
+    booktitle={EMNLP},
     url={https://arxiv.org/abs/2002.09758}
 }
 ```
