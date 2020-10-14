@@ -97,7 +97,7 @@ You can also use the trained Seq2Seq model checkpoint as the pre-trained initial
 
 ### MLM Pre-training (Optional)
 
-Download MLM pretraining data [here](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/mlm_pretraining_data.tar.gz)
+New: Download MLM pretraining data [here](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/mlm_pretraining_data.tar.gz)
 
 To pre-train your own MLM initialization (used as `MLM_INIT`), use the below commands:
 ```bash
@@ -175,7 +175,12 @@ OUTPUT_DIR="checkpoint/tn=$TN/rs=$RANDOM_SEED"
 python $DIST_OPTS examples/run_squad.py --model_type roberta --model_name_or_path roberta-large --train_file data/$TN/train.json --predict_file data/$TN/dev.json --do_train $EVAL_OPTS --do_lower_case --version_2_with_negative --output_dir $OUTPUT_DIR --per_gpu_train_batch_size $((64/NGPU)) --per_gpu_eval_batch_size 32 --learning_rate 1.5e-5 --master_port $MASTER_PORT --max_query_length 234 --max_seq_length 512 --doc_stride 50 --num_shards 1 --seed $RANDOM_SEED --max_grad_norm inf --adam_epsilon 1e-6 --adam_beta_2 0.98 --weight_decay 0.01 --warmup_proportion 0.06 --num_train_epochs 2 --overwrite_output_dir
 ```
 
-New: our trained multihop model checkpoints are available here: [Model Seed 1](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_0.tar.gz), [Model Seed 2](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_1.tar.gz) ,[Model Seed 3](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_2.tar.gz) ,[Model Seed 4](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_3.tar.gz) ,[Model Seed 5](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_4.tar.gz)  
+New: our trained multihop model checkpoints are available here: 
+* [Model Seed 1](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_0.tar.gz)
+* [Model Seed 2](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_1.tar.gz)
+* [Model Seed 3](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_2.tar.gz)
+* [Model Seed 4](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_3.tar.gz) 
+* [Model Seed 5](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_4.tar.gz)  
 
 ## Creating Alternate Pseudo-Decompositions
 We can also create pseudo-decompositions using other embedding methods aside from FastText, as described in the Appendix.
