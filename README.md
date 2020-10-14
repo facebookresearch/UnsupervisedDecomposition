@@ -17,6 +17,12 @@ We made the following changes/additions:
 - Scripts/notebooks to preprocess data
 - Additions to evaluation to handle/evaluate on HotpotQA (i.e., extend single-paragraph SQuAD implementation to multi-paragraph setting)
 
+*10/2020: Update! added additional data and resources*:
+* Simple and multihop mined questions
+* Multihop QA model checkpoints
+* MLM pretraining data
+* Unsupervised MT training data
+
 ## Installation
 
 Create an anaconda3 environment (we used anaconda3 version 5.0.1):
@@ -68,6 +74,8 @@ NUM_TRAIN=`wc -l < data/umt/$DATA_FOLDER/processed/train.mh`
 python $DIST_OPTS train.py --exp_name umt.$DATA_FOLDER --data_path data/umt/$DATA_FOLDER/processed --dump_path ./dumped/ --reload_model "$MLM_INIT,$MLM_INIT" --encoder_only false --emb_dim 2048 --n_layers 6 --n_heads 16 --dropout 0.1 --attention_dropout 0.1 --gelu_activation true --use_lang_emb true --lgs 'mh-sh' --ae_steps 'mh,sh' --bt_steps 'mh-sh-mh,sh-mh-sh' --stopping_criterion 'valid_mh-sh-mh_mt_effective_goods_back_bleu,2' --validation_metrics 'valid_mh-sh-mh_mt_effective_goods_back_bleu' --eval_bleu true --epoch_size $((4*NUM_TRAIN/(NPROC_PER_NODE*N_NODES))) --lambda_ae '0:1,100000:0.1,300000:0' --optimizer 'adam_inverse_sqrt,beta1=0.9,beta2=0.98,lr=0.00003' --tokens_per_batch 1024 --batch_size $BS --word_shuffle 3 --word_dropout 0.1 --word_blank 0.1 --max_len 128 --bptt 128 --save_periodic 0 --split_data true --validation_weight 0.5
 ```
 
+New: to train UMT with the same data we used, download our splits [here](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/umt_training_data.tar.gz)
+
 ### Seq2Seq Decomposition Training (Optional)
 Alternatively, you can train a standard Seq2Seq model as follows:
 ```bash
@@ -88,6 +96,9 @@ python $DIST_OPTS train.py --exp_name mt.$DATA_FOLDER --data_path $DATA_PATH --d
 You can also use the trained Seq2Seq model checkpoint as the pre-trained initialization (`MLM_INIT`) for USeq2Seq training, as our Curriculum Seq2Seq approach does (see Appendix).
 
 ### MLM Pre-training (Optional)
+
+Download MLM pretraining data [here](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/mlm_pretraining_data.tar.gz)
+
 To pre-train your own MLM initialization (used as `MLM_INIT`), use the below commands:
 ```bash
 # Set the following parameters based on your hardware
@@ -164,6 +175,8 @@ OUTPUT_DIR="checkpoint/tn=$TN/rs=$RANDOM_SEED"
 python $DIST_OPTS examples/run_squad.py --model_type roberta --model_name_or_path roberta-large --train_file data/$TN/train.json --predict_file data/$TN/dev.json --do_train $EVAL_OPTS --do_lower_case --version_2_with_negative --output_dir $OUTPUT_DIR --per_gpu_train_batch_size $((64/NGPU)) --per_gpu_eval_batch_size 32 --learning_rate 1.5e-5 --master_port $MASTER_PORT --max_query_length 234 --max_seq_length 512 --doc_stride 50 --num_shards 1 --seed $RANDOM_SEED --max_grad_norm inf --adam_epsilon 1e-6 --adam_beta_2 0.98 --weight_decay 0.01 --warmup_proportion 0.06 --num_train_epochs 2 --overwrite_output_dir
 ```
 
+New: our trained multihop model checkpoints are available here: [Model Seed 1](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_0.tar.gz), [Model Seed 2](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_1.tar.gz) ,[Model Seed 3](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_2.tar.gz) ,[Model Seed 4](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_3.tar.gz) ,[Model Seed 5](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/multihop_qa_model_4.tar.gz)  
+
 ## Creating Alternate Pseudo-Decompositions
 We can also create pseudo-decompositions using other embedding methods aside from FastText, as described in the Appendix.
 To do so, use the functions in `pytorch-transformers/pseudoalignment/pseudo_decomp_{paired_random|fasttext|tfidf|bert|variable}.py`, e.g., by running:
@@ -189,6 +202,12 @@ To train a decomposition model to generate a variable number of sub-questions, y
 - Train on variable-length pseudo-decompositions, created using `python pseudoalignment/pseudo_decomp_fasttext.py` (see above).
 - Use a version of the unsupervised stopping criterion which only counts bad decompositions as those with `N<2` sub-questions (as opposed to `N!=2` sub-questions). Simply add the flag `--one_to_variable` when training (Unsupervised) Seq2Seq models with `XLM/train.py`.
 - Have the single-hop QA model answer an arbitrary number of sub-questions, instead of a maximum of 2 sub-questions. Simply add `--one_to_variable` to the `FLAGS` variable used in the "QA Model Training" section earlier.
+
+## Data mined from Common Crawl
+
+Data mined from common crawl using our fasttext classifiers can be found [here](mined_questions.tar.gz)
+
+
 
 ## Citation
 ```
