@@ -210,7 +210,7 @@ To train a decomposition model to generate a variable number of sub-questions, y
 
 ## Data mined from Common Crawl
 
-Data mined from common crawl using our fasttext classifiers can be found [here](mined_questions.tar.gz)
+Data mined from common crawl using our fasttext classifiers can be found [here](https://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/mined_questions.tar.gz)
 
 
 
