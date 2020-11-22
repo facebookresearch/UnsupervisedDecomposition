@@ -5,3 +5,4 @@ fastBPE
 sklearn
 ujson
 spacy
+tensorboardX
