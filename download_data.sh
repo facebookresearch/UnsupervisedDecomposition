@@ -51,6 +51,7 @@ mv hotpot_dev_distractor_v1.json data/hotpot-orig/
 cd data/hotpot-orig
 ln -s hotpot_train_v1.json train.json
 ln -s hotpot_dev_distractor_v1.json dev.json
+wget http://dl.fbaipublicfiles.com/UnsupervisedDecomposition/data/qid2passage_entities.json .  # Download a file we use for the random entity subanswer baseline (Table 2 right)
 
 # Write HotpotQA questions and QIDs to XLM-formatted questions file
 cd $MAIN_DIR/XLM/
